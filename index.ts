@@ -1,13 +1,16 @@
-import { randomUUIDv7, type Socket, type TCPSocketListenOptions } from "bun";
+import { type Socket, type TCPSocketListenOptions } from "bun";
+import { randomUUID } from "crypto";
 
 console.log(`Restarted at: `, Date.now());
 
-const config: TCPSocketListenOptions = {
+console.log(`Host: ${Bun.env.HOST}`);
+
+const config: TCPSocketListenOptions<SocketType> = {
   hostname: Bun.env.HOST as string,
   port: Number(Bun.env.PORT),
   socket: {
-    data: (socket: any, data) => onData(socket, data), // Data recieved from client
-    open: (socket: any) => onSocketOpen(socket), // Socket Opened
+    data: onData, // Data recieved from client
+    open: onSocketOpen, // Socket Opened
     close: onSocketClose, // Socket Closed
     error: onSocketError, // Socket Error
   },
@@ -24,16 +27,18 @@ async function onData(socket: Socket<SocketType>, data: Buffer) {
 
 async function onSocketOpen(socket: Socket<SocketType>) {
   console.log(`Socket Open`);
-  socket.data = { sessionId: randomUUIDv7() };
+  const id = randomUUID();
+  console.log(`created id: ${id}`);
+  socket.data = { sessionId: id };
 }
 
-async function onSocketClose(socket: Socket<undefined>) {
+async function onSocketClose(socket: Socket<SocketType>) {
   console.log(`On Socket Close`);
 }
 
-async function onSocketError(socket: Socket<undefined>, error: Error) {
+async function onSocketError(socket: Socket<SocketType>, error: Error) {
   console.log(`On Socket Error`);
   console.error(error);
 }
 
-Bun.listen(config);
+Bun.listen<SocketType>(config);
