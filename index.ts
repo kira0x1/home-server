@@ -5,6 +5,7 @@ console.log(`Restarted at: `, Date.now());
 
 console.log(`Host: ${Bun.env.HOST}`);
 
+
 const config: TCPSocketListenOptions<SocketType> = {
   hostname: Bun.env.HOST as string,
   port: Number(Bun.env.PORT),
@@ -41,4 +42,5 @@ async function onSocketError(socket: Socket<SocketType>, error: Error) {
   console.error(error);
 }
 
-Bun.listen<SocketType>(config);
+const server = Bun.listen<SocketType>(config);
+console.log(`created server: ${server.hostname}:${server.port}`)
