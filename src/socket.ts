@@ -1,11 +1,6 @@
 import { type Socket, type TCPSocketListenOptions } from "bun";
 import { randomUUID } from "crypto";
 
-console.log(`Restarted at: `, Date.now());
-
-console.log(`Host: ${Bun.env.HOST}`);
-
-
 const config: TCPSocketListenOptions<SocketType> = {
   hostname: Bun.env.HOST as string,
   port: Number(Bun.env.PORT),
@@ -16,6 +11,11 @@ const config: TCPSocketListenOptions<SocketType> = {
     error: onSocketError, // Socket Error
   },
 };
+
+export async function CreateSocketServer() {
+  const server = Bun.listen<SocketType>(config);
+  console.log(`created server: ${server.hostname}:${server.port}`);
+}
 
 type SocketType = {
   sessionId?: string;
@@ -41,6 +41,3 @@ async function onSocketError(socket: Socket<SocketType>, error: Error) {
   console.log(`On Socket Error`);
   console.error(error);
 }
-
-const server = Bun.listen<SocketType>(config);
-console.log(`created server: ${server.hostname}:${server.port}`)
