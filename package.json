@@ -1,18 +1,20 @@
 {
   "name": "piserver",
-  "module": "src/index.ts",
+  "main": "out/index.js",
+  "module": "out/index.js",
   "type": "module",
   "scripts": {
-    "start": "bun run src/index.ts"
+    "start": "node .",
+    "build": "tsc"
   },
   "devDependencies": {
-    "@types/bun": "latest",
-    "@types/express": "^5.0.0"
-  },
-  "peerDependencies": {
+    "@types/dotenv": "^6.1.1",
+    "@types/express": "^5.0.0",
+    "dotenv": "^16.4.5",
     "typescript": "^5.0.0"
   },
   "dependencies": {
     "express": "^4.21.1"
-  }
+  },
+  "packageManager": "pnpm@9.10.0+sha512.73a29afa36a0d092ece5271de5177ecbf8318d454ecd701343131b8ebc0c1a91c487da46ab77c8e596d6acf1461e3594ced4becedf8921b074fbd8653ed7051c"
 }

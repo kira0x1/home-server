@@ -1,9 +1,12 @@
-import { getUptime } from "./utils";
+import dotenv from "dotenv";
+import { getUptime } from "./utils.js";
 import express from "express";
 
+dotenv.config();
+
 const app = express();
-const port = Number(Bun.env.PORT) || 3000;
-const hostname = Bun.env.HOST as string;
+const port = Number(process.env.PORT) || 3000;
+const hostname = process.env.HOST as string;
 
 app.get("/uptime", (req, res) => {
   res.json({ uptime: getUptime() });
